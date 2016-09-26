@@ -1,4 +1,7 @@
 class LivingSpace(object):
+	'''class allocates a living space to an individual and 
+	   recalls it from the individual when need arises
+	  '''
 	def __init__(self):
 		pass
 

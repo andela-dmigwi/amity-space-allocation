@@ -1,4 +1,7 @@
 class Office(object):
+	'''class allocates office to a person and recall an allocated
+	   office from an individual
+	'''
 	def __init__(self):
 		pass
 
