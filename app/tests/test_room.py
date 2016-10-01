@@ -1,9 +1,11 @@
 import unittest
 from app.room import Room
+from app.staff import Staff
 
 class TestRoom(unittest.TestCase):
     def setUp(self):
         self.room = Room()
+        self.staff = Staff()
         
     def test_create_room(self):
         res = self.room.create_room(room_name='Valhala', room_type='Office')
@@ -31,8 +33,9 @@ class TestRoom(unittest.TestCase):
 
     def test_get_unallocated(self):
         rm = self.room.get_unallocated()
-        self.assertEqual(type(rm),'dict')
+        self.assertEqual(type(rm),'dict')    
 
-    def test_get_room(self):
-        rm = self.room.get_room('xxxx')
-        self.assertEqual([type(rm)], ['dict'])
+    def test_get_assigned_room(self):        
+        self.staff.add_staff(person_name = 'Super Socky' ) 
+        assign = self.room.get_assigned_room(person_name = 'Super Socky' )
+        self.assertEqual(type(assign), 'dict')
