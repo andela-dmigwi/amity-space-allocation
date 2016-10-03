@@ -7,20 +7,20 @@ class TestFellow(unittest.TestCase):
 
     def test_add_fellow(self):
         fw = self.fellow.add_fellow(person_name='Dennis Okari')
-        self.assertEqual(fw, 'Dennis Okari')
+        self.assertTrue(fw)
 
     #test if person_name is empty
     def test_add_empty_name(self):
         fw = self.fellow.add_fellow(person_name='')
-        self.assertEqual(fw, 'person_name is too short')
+        self.assertEqual(fw, 'Invalid Person name used')
 
     #test if person_name is too long(longer than 20 characters)
     def test_add_too_long_name(self):        
         fw = self.fellow.add_fellow(person_name = 'This is a very long, very long, long name')
-        self.assertEqual(fw, 'person_name is too long')   
+        self.assertEqual(fw, 'Person Name is too long')   
 
     #test invalid person_name
-    def test_invalid_person_id(self):       
+    def test_invalid_person_name(self):       
         fw = self.fellow.add_fellow(person_name=['Lewis'])
         self.assertEqual(fw, 'Invalid name type')
 

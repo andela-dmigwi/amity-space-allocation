@@ -28,4 +28,4 @@ class Room(object):
 
     # def get_unallocated(self, filename):
     def get_unallocated(self):
-        pass 
+        pass   

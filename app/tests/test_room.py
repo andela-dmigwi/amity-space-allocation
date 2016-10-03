@@ -38,4 +38,4 @@ class TestRoom(unittest.TestCase):
     def test_get_assigned_room(self):        
         self.staff.add_staff(person_name = 'Super Socky' ) 
         assign = self.room.get_assigned_room(person_name = 'Super Socky' )
-        self.assertEqual(type(assign), 'dict')
+        self.assertEqual(type(assign), 'dict')  

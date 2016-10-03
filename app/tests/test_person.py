@@ -27,7 +27,7 @@ class TestPerson(unittest.TestCase):
     def test_add_staff_assign_livingspace(self):
         pers = self.person.add_person(person_name='Njira', type_person='staff',
             want_accomodation='y')
-        self.assertEqual(pers, 'Failed, staff cannot have accomodation')
+        self.assertEqual(pers, 'staff cannot have accomodation')
 
 
     def test_add_two_people_who_share_name(self):
@@ -35,7 +35,7 @@ class TestPerson(unittest.TestCase):
         self.person.add_person(person_name='Joshua', type_person='fellow')
         #Adding person two 
         pers = self.person.add_person(person_name='Joshua', type_person='staff')
-        self.assertEqual(pers, 'Person name cannot be shared')
+        self.assertEqual(pers, 'Joshua already exists')
 
     def test_reallocate_person(self):       
         self.staff.add_staff(person_name='James Ndiga')

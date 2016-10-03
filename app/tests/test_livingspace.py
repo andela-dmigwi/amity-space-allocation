@@ -11,22 +11,26 @@ class TestLivingSpace(unittest.TestCase):
         
     def test_allocate_livingspace(self):
         self.fellow.add_fellow(person_name="Elias Kanyi")
-        ls = self.living.allocate_livingspace(room_name='Valhala', person_name="Elias Kanyi")
+        ls = self.living.allocate_livingspace(person_name="Elias Kanyi")
         self.assertTrue(ls)
 
     def test_allocate_staff_livingspace(self):
         self.staff.add_staff(person_name="Judy Wakhungu")
-        ls = self.living.allocate_livingspace(room_name='Valhala', person_name="Elias Kanyi")
-        self.assertEqual(ls, 'Staff cannot have accomodation')
+        ls = self.living.allocate_livingspace(person_name="Elias Kanyi")
+        self.assertEqual(ls, 'Only A fellow who can get Accomodation')
 
     def test_allocate_livingspace_again(self):
-        ls = self.living.allocate_livingspace(room_name='Valhala', person_name="Elias Kanyi")
+        ls = self.living.allocate_livingspace(person_name="Elias Kanyi")
         self.assertEqual(ls, '"Elias Kanyi has a livingspace already')
+
+    def test_reallocate_livingspace():
+        pass
 
     def test_recall_allocated_livingspace(self):
         ls = self.living.recall_allocated_livingspace(person_name="Elias Kanyi")
-        self.assertEqual(ls, 'Room has been recalled')
+        self.assertTrue(ls)
 
     def test_recall_allocated_livingspace_again(self):
         ls = self.living.recall_allocated_livingspace(person_name="Elias Kanyi") 
         self.assertEqual(ls, '"Elias Kanyi not found')
+  
