@@ -5,11 +5,12 @@ class Staff(object):
       '''
     staff_names = []
 
-    def __init__(self, staffs):     
+    def __init__(self, staffs):
+        self.staffs = staffs     
         Staff.staff_names.extend(staffs)
 
     def add_staff(self, person_name):
-        if person_name is '' or type(person_name) not 'string':
+        if person_name is '' or type(person_name) != 'string':
             return 'Invalid Staff name type'
 
         elif len(person_name) > 21:

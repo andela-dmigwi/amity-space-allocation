@@ -7,9 +7,9 @@ from app.fellow import Fellow
 class TestPerson(unittest.TestCase):
     def setUp(self):
         self.person = Person()
-        self.staff = Staff()
+        self.staff = Staff([])
         self.room  = Room()
-        self.fellow = Fellow()
+        self.fellow = Fellow({})
 
     #test add fellow who doesn't need living space or office
     def test_add_fellow_who_dont_need_room(self):

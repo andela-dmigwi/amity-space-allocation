@@ -6,11 +6,12 @@ class Fellow(object):
 
     def __init__(self, fellows):
         '''Assigned fellows stored in db'''
-        Fellow.fellow_names.extend(fellows)
+        self.fellows = fellows
+        Fellow.fellow_names.extend(self.fellows)
         
         
     def add_fellow(self, person_name):
-        if  person_name is '' or type(person_name) not 'string':
+        if  person_name is '' or type(person_name) !='string':
             return 'Invalid Person name used'
        
         elif len(person_name) > 21:

@@ -3,7 +3,7 @@ from app.staff import Staff
 
 class TestStaff(unittest.TestCase):
     def setUp(self):
-        self.staff = Staff()
+        self.staff = Staff([])
         
     def test_add(self):
         name = self.staff.add_staff('Fally Ipupa')

@@ -6,9 +6,9 @@ from app.room import Room
 
 class TestLivingSpace(unittest.TestCase):
     def setUp(self):
-        self.living = LivingSpace()
-        self.fellow = Fellow()
-        self.staff = Staff()
+        self.living = LivingSpace({})
+        self.fellow = Fellow({})
+        self.staff = Staff([])
         self.rm = Room()
         
     def test_allocate_livingspace(self):
@@ -26,11 +26,11 @@ class TestLivingSpace(unittest.TestCase):
         self.assertEqual(ls, '"Elias Kanyi has a livingspace already')
 
     def test_reallocate_livingspace(self):
-        rm.create_room(room_name='Valhala', room_type='Livingspace')
+        self.rm.create_room(room_name='Valhala', room_type='Livingspace')
         ls = self.living.reallocate_livingspace(person_name="Elias Kanyi", room_name='Valhala')
         self.assertTrue(ls)
 
-     def test_reallocate_livingspace_not_available(self):
+    def test_reallocate_livingspace_not_available(self):
         ls = self.living.reallocate_livingspace(person_name="Elias Kanyi", room_name='Ambercrombie')
         self.assertTrue(ls, 'Ambercrombie does not exist')
 

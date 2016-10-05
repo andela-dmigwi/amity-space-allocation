@@ -5,7 +5,7 @@ from app.staff import Staff
 class TestRoom(unittest.TestCase):
     def setUp(self):
         self.room = Room()
-        self.staff = Staff()
+        self.staff = Staff([])
         
     def test_create_room(self):
         res = self.room.create_room(room_name='Valhala', room_type='Office')

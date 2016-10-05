@@ -3,7 +3,7 @@ from app.fellow import Fellow
 
 class TestFellow(unittest.TestCase):
     def setUp(self):
-        self.fellow  = Fellow()    
+        self.fellow  = Fellow({})    
 
     def test_add_fellow(self):
         fw = self.fellow.add_fellow(person_name='Dennis Okari')
