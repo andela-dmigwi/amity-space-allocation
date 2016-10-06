@@ -1,5 +1,5 @@
 import random
-from fellow import Fellow 
+from app.fellow import Fellow 
 
 class LivingSpace(object):
     '''class allocates a living space to an individual and 
