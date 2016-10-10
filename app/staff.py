@@ -10,7 +10,7 @@ class Staff(object):
         Staff.staff_names.extend(staffs)
 
     def add_staff(self, person_name):
-        if person_name is '' or type(person_name) != 'string':
+        if person_name == '' or type(person_name) != 'string':
             return 'Invalid Staff name type'
 
         elif len(person_name) > 21:

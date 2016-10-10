@@ -21,7 +21,18 @@ class TestPerson(unittest.TestCase):
     def test_add_fellow_who_need_livingspace(self):
         pers = self.person.add_person(person_name='Arnold', type_person='fellow', 
             want_accomodation='y')
-        self.assertTrue(pers) 
+        self.assertIn('Office', pers) 
+        self.assertIn('Living Space', pers) 
+
+        pers = self.person.add_person(person_name='Garbriel Mwata', type_person='staff',
+            want_accomodation='n')
+        self.assertIn('Office', pers) 
+        self.assertNotIn('Living Space', pers) 
+
+        pers = self.person.add_person(person_name='Eliud Mazela', type_person='fellow',
+            want_accomodation='n')
+        self.assertIn('Office', pers) 
+        self.assertNotIn('Living Space', pers) 
 
     #test add staff and assign them livingspace
     def test_add_staff_assign_livingspace(self):
