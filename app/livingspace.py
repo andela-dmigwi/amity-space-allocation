@@ -1,11 +1,12 @@
 import random
-from app.fellow import Fellow 
+from app.fellow import Fellow
+
 
 class LivingSpace(object):
-    '''class allocates a living space to an individual and 
+    '''class allocates a living space to an individual and
        recalls it from the individual when need arises
        record = {'room_name:[List of Occupants]}
-      '''
+    '''
     room_n_occupants = {}
 
     def __init__(self, data):
@@ -15,22 +16,24 @@ class LivingSpace(object):
         self.fellow = Fellow({})
 
     def allocate_livingspace(self, person_name):
-        '''livingspaces are allocated randomly''' 
-        if person_name in self.fellow.fellow_names:             
-            #check if the fellow has already been assigned a room
+        '''livingspaces are allocated randomly'''
+        if person_name in self.fellow.fellow_names:
+            # check if the fellow has already been assigned a room
             assigned_room = self.get_allocated_room(person_name)
             if assigned_room != '':
-                return person_name+' has a livingspace already' 
+                return person_name + ' has a livingspace already'
             total_rooms = len(LivingSpace.room_n_occupants)
-            for room_no in xrange(1, total_rooms + 1):                                 
+            for room_no in xrange(1, total_rooms + 1):
                 room = random.choices(LivingSpace.room_n_occupants.items())
-                
+
                 # A Livingspace can only accomodate a maximum of 4 fellows
-                if len(room.values()) < 4: 
-                    LivingSpace.room_n_occupants[room.keys()].append(person_name)
-                    return True #break the loop
+                if len(room.values()) < 4:
+                    LivingSpace.room_n_occupants[
+                        room.keys()].append(person_name)
+                    return True  # break the loop
                 elif room_no == total_rooms:
-                    return 'All Living Space Rooms are full, Create more rooms!!!' 
+                    return """All Living Space Rooms are full,
+                     Create more rooms!!!"""
         return 'Only A fellow who can get Accomodation'
 
     def reallocate_livingspace(self, person_name, room_name):
@@ -41,20 +44,18 @@ class LivingSpace(object):
             if len(room_members) < 4:
                 room_members.append(person_name)
                 return True
-            return room_name+' has a maximum of 4 fellows'
+            return room_name + ' has a maximum of 4 fellows'
         except:
-            return room_name+' does not exist'
+            return room_name + ' does not exist'
 
-
-    def recall_allocated_livingspace(self, person_name): 
+    def recall_allocated_livingspace(self, person_name):
         '''If an error is raised the person_name doesn't have a livingspace '''
-        room_name = self.get_allocated_room(person_name)     
+        room_name = self.get_allocated_room(person_name)
         try:
             LivingSpace.room_n_occupants[room_name].remove(person_name)
             return True
         except:
-            return person_name+' not found'
-
+            return person_name + ' not found'
 
     def get_allocated_room(self, person_name):
         '''Retrieve the room assigned'''
@@ -62,4 +63,4 @@ class LivingSpace(object):
         for room in LivingSpace.room_n_occupants:
             if person_name in room.value():
                 rm = room.key()
-        return rm 
+        return rm
