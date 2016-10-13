@@ -18,7 +18,7 @@ class Office(object):
     def allocate_office(self, person_name):
         '''An office will be allocated randomly'''
         if person_name in self.fello.fellow_names or person_name in self.stf.staff_names:
-            room = self.get_room(person_name)
+            room = self.get_assigned_room(person_name)
             if room != '':
                 return person_name + ' has an Office already'
             total_rooms = len(Office.office_n_occupants)
@@ -53,8 +53,8 @@ class Office(object):
         except:
             return person_name + ' not found'
 
-    def get_room(self, person_name):
-        room_name = ''
+    def get_assigned_room(self, person_name):
+        room_name = 'None'
         for rm in Office.office_n_occupants:
             if person_name in rm.value():
                 room_name = rm.key()

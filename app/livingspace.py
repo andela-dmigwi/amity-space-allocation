@@ -32,8 +32,7 @@ class LivingSpace(object):
                         room.keys()].append(person_name)
                     return True  # break the loop
                 elif room_no == total_rooms:
-                    return """All Living Space Rooms are full,
-                     Create more rooms!!!"""
+                    return """All Living Space Rooms are full, Create more rooms!!!"""
         return 'Only A fellow who can get Accomodation'
 
     def reallocate_livingspace(self, person_name, room_name):
@@ -59,8 +58,8 @@ class LivingSpace(object):
 
     def get_allocated_room(self, person_name):
         '''Retrieve the room assigned'''
-        rm = ''
-        for room in LivingSpace.room_n_occupants:
-            if person_name in room.value():
-                rm = room.key()
+        rm = 'None'
+        for room_name, occupants in LivingSpace.room_n_occupants.items():
+            if person_name in occupants:
+                rm = room_name
         return rm
