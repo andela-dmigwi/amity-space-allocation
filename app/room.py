@@ -36,8 +36,8 @@ class Room(Office, livin):
         felo = Fellow.fellow_names
         staff = Staff.staff_names
         if person_name in felo or person_name in staff:
-            room = self.get_assigned_room(person_name, 'office')
-            if room != 'None':
+            room_offy = self.get_assigned_room(person_name, 'office')
+            if room_offy is not 'None':
                 return person_name + ' has an Office already'
 
             ret_val = self.randomly_allocate_rooms(
@@ -47,6 +47,10 @@ class Room(Office, livin):
                 return ret_val
 
             if 'y' is want_accomodation:
+                room_offy = self.get_assigned_room(person_name, 'livingspace')
+                if room_offy is not 'None':
+                    return person_name + ' has a Living Space already'
+
                 resp_val = self.randomly_allocate_rooms(
                     livin.living_capacity, livin.room_n_occupants, person_name)
 
@@ -55,7 +59,7 @@ class Room(Office, livin):
 
             office_ass = self.get_room(person_name)
             livingspace_as = self.get_room(person_name)
-            return 'Allocated Office :' + office_ass + """
+            return 'Allocated Office Space :' + office_ass + """
             \n Allocated Living Space :""" + livingspace_as
 
         return 'Offices are allocated to staff and fellows ONLY'
@@ -84,7 +88,7 @@ class Room(Office, livin):
 
         elif room_name in list(livin.room_n_occupants.keys()):
             if person_name not in felo:
-                return 'Living Space are allocated to fellows ONLY'
+                return 'Living Spaces are allocated to fellows ONLY'
 
             ret = self.reallocate(person_name, room_name, 'livingspace')
             if ret is not True:

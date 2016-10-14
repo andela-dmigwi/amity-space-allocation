@@ -1,8 +1,9 @@
 ## Amit Space Allocation System
 
+[![Code Climate](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation/badges/gpa.svg)](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation)
 [![Build Status](https://travis-ci.org/andela-dmigwi/amity-space-allocation.svg?branch=develop-refactor)](https://travis-ci.org/andela-dmigwi/amity-space-allocation)
-[![Test Coverage](https://codeclimate.com/github/andela/healthchecks_b/badges/coverage.svg)](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation)
-[![Issue Count](https://codeclimate.com/github/andela/healthchecks_b/badges/issue_count.svg)](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation)
+[![Test Coverage](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation/badges/coverage.svg)](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation/coverage)
+[![Issue Count](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation/badges/issue_count.svg)](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation)
 
 
 Amity is an [Andela](http://andela.com) facility that has several rooms in it. A room can be
