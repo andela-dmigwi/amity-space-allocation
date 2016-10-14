@@ -70,8 +70,7 @@ class MyInteractive (cmd.Cmd):
         data = {}
         elements = arg['<room_name>'].replace(',', ' ').split(' ')
         for elem in elements:
-            room_type = raw_input(
-                'Type "O" for Office else it will be Living Space\n %s :' % elem)
+            room_type = input('Type "O" for Office else it will be Living Space\n %s :' % elem)
             if 'o' in room_type.lower():
                 data[elem] = 'office'
             else:
@@ -87,14 +86,14 @@ class MyInteractive (cmd.Cmd):
         """Usage: add_person <room_name> (FELLOW|STAFF) [<wants_accommodation>] """
 
         person_name = arg["<room_name>"]
-        if arg['FELLOW'] is not None:
-            type_person = 'fellow'
+        if arg['FELLOW'] is None:
+            type_person = arg['STAFF']
         else:
-            type_person = 'staff'
+            type_person = arg['FELLOW']
 
-        need = arg['<wants_accommodation>']
+        need = arg['<wants_accommodation>'].lower()
 
-        print (Person().add_person(person_name, type_person, need))
+        print (Person().add_person(person_name, type_person.lower(), need))
         print('=' * 75)
 
     @docopt_cmd
