@@ -1,6 +1,6 @@
 ## Amit Space Allocation System
 
-[![Code Climate](https://codeclimate.com/github/andela/healthchecks_b/badges/gpa.svg)](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation)
+[![Build Status](https://travis-ci.org/andela-dmigwi/amity-space-allocation.svg?branch=develop-refactor)](https://travis-ci.org/andela-dmigwi/amity-space-allocation)
 [![Test Coverage](https://codeclimate.com/github/andela/healthchecks_b/badges/coverage.svg)](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation)
 [![Issue Count](https://codeclimate.com/github/andela/healthchecks_b/badges/issue_count.svg)](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation)
 
