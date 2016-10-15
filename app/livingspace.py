@@ -5,6 +5,6 @@ class LivingSpace(object):
     room_n_occupants = {}
     living_capacity = 4
 
-    def __init__(self, data):
+    def __init__(self, data_from_db):
         '''add the  livingspaces with their occupants'''
-        LivingSpace.room_n_occupants.update(self.data)
+        LivingSpace.room_n_occupants.update(data_from_db)
