@@ -22,15 +22,77 @@ class Amity(object):
     def save_state(self, db):
         self.dump_databases_and_create_new()
 
-        self.save_data_into_db(data=Staff.staff_names, 'fellow_n_ staff_details')
-        self.save_data_into_db(data=Fellow.fellow_names, 'fellow_n_ staff_details')
-        self.save_data_into_db(data=Office.office_n_occupants, 'office_details')
-        self.save_data_into_db(data=LivingSpace.room_n_occupants, 'living_details')
+        # self.save_data_into_db(data=Staff.staff_names, 'fellow_n_staff_details')
+        # self.save_data_into_db(data=Fellow.fellow_names, 'fellow_n_staff_details')
+        # self.save_data_into_db(data=Office.office_n_occupants, 'office_details')
+        # self.save_data_into_db(data=LivingSpace.room_n_occupants, 'living_details')
 
     def load_state(self, db):
         self.connect_db()
 
         pass
+
+   
+    def dump_databases_and_create_new(self):
+        try:
+            print ('Initialize database Creation')
+
+            con = lite.connect(r'amity.db')
+            cur = con.cursor()
+            cur.executescript("""
+                DROP TABLE IF EXISTS fellow_n_ staff_details;
+                CREATE TABLE fellow_n_ staff_details(person_name TEXT,
+                            type_person TEXT);
+
+                DROP TABLE IF EXISTS office_details;
+                CREATE TABLE office_details(room_name TEXT,
+                            occuppants TEXT);
+
+                DROP TABLE IF EXISTS living_details;
+                CREATE TABLE living_details(room_name TEXT,
+                            occuppants TEXT); """
+                              )
+            con.commit()
+
+            print ('Databases creation finished successfully!!')
+
+        except lite.Error as e:
+            print ('Error %s ocurred : Databases Creation failed!!!' % e.arg[0])
+
+        def save_data_into_db(self, data, table):
+            self.connect_db()
+            row = []
+
+            for key, val in data.items():
+                row.append(key)
+                if type(val) is list:
+                    row.append(val.join('|'))
+                row.append(val)
+
+            self.cur.execute("INSERT INTO +'table'+ VALUES(?,?)", tuple(row))
+            self.con.commit()
+            self.con.close()
+            return True
+
+
+    def print_file(self, filename, type, data):
+        '''Assign .txt extension'''
+        filename = filename + '-' + type + '.txt'
+        try:
+            with open(filename, 'w') as file:
+                if 'allocated' in type:
+                    # Print room names and Occupants dict
+                    for key, value in data.items():
+                        temp = 'Room Name: ' + key + \
+                            '  Occupants:' + str(value)
+                        file.write(temp)
+                else:
+                    # Print empty rooms list
+                    file.write('Empty Rooms:' + str(data))
+                file.close()
+                return filename + ' successfully saved'
+        except:
+            return 'Failed to save ' + filename + ' successfully.'
 
     def load_people(self, filename='people.txt'):
         with open(filename, 'r') as input_file:
@@ -56,44 +118,3 @@ class Amity(object):
                         "Fellow": is_fellow,
                         "<wants_accomodation>": wants_accomodation
                     })
-
-    def dump_databases_and_create_new(self):
-        try:
-            print 'Initialize database Creation'
-
-            con = lite.connect(r'amity.db')
-            cur = con.cursor()
-            cur.executescript("""
-                DROP TABLE IF EXISTS fellow_n_ staff_details;
-                CREATE TABLE fellow_n_ staff_details(person_name TEXT,
-                            type_person TEXT);
-
-                DROP TABLE IF EXISTS office_details;
-                CREATE TABLE office_details(room_name TEXT,
-                            occuppants TEXT);
-
-                DROP TABLE IF EXISTS living_details;
-                CREATE TABLE living_details(room_name TEXT,
-                            occuppants TEXT); """
-                              )
-            con.commit()
-
-            print 'Databases creation finished successfully!!'
-
-        except lite.Error, e:
-            print 'Error %s ocurred : Databases Creation failed!!!' % e.arg[0]
-
-        def save_data_into_db(self, data, table):
-            self.connect_db()
-            row = []
-
-            for key, val in data.items():
-                row.append(key)
-                if type(val) is list:
-                    row.append(val.join('|'))
-                row.append(val)
-
-            self.cur.execute("INSERT INTO +'table'+ VALUES(?,?)", tuple(row))
-            self.con.commit()
-            self.con.close()
-            return True

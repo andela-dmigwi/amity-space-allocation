@@ -2,6 +2,7 @@ from app.livingspace import LivingSpace as livin
 from app.office import Office
 from app.fellow import Fellow
 from app.staff import Staff
+from amity import Amity
 
 
 import random
@@ -33,10 +34,10 @@ class Room(Office, livin):
         return """Create a room of type 'LivingSpace' or 'Office'  ONLY!"""
 
     def allocate_space(self, person_name, want_accomodation='n'):
-        felo = Fellow.fellow_names
-        staff = Staff.staff_names
+        felo = list(Fellow.fellow_names)
+        staff = list(Staff.staff_names)
         if person_name in felo or person_name in staff:
-            room_offy = self.get_assigned_room(person_name, 'office')
+            room_offy = self.get_room(person_name, 'office')
             if room_offy is not 'None':
                 return person_name + ' has an Office already'
 
@@ -47,7 +48,7 @@ class Room(Office, livin):
                 return ret_val
 
             if 'y' is want_accomodation:
-                room_offy = self.get_assigned_room(person_name, 'livingspace')
+                room_offy = self.get_room(person_name, 'livingspace')
                 if room_offy is not 'None':
                     return person_name + ' has a Living Space already'
 
@@ -57,28 +58,28 @@ class Room(Office, livin):
                 if resp_val is not True:
                     return resp_val
 
-            office_ass = self.get_room(person_name)
-            livingspace_as = self.get_room(person_name)
-            return 'Allocated Office Space :' + office_ass + """
-            \n Allocated Living Space :""" + livingspace_as
+            office_ass = self.get_room(person_name, 'office')
+            livingspace_as = self.get_room(person_name, 'livingspace')
+            return 'Allocated Office Space :' + office_ass + ' \n Allocated Living Space :' + livingspace_as
 
         return 'Offices are allocated to staff and fellows ONLY'
 
     def randomly_allocate_rooms(self, capacity, data, person_name):
         total_rooms = len(data)
         for rm in range(1, total_rooms + 1):
-            selected = random.choices(list(data.items()))
-            if len(selected.values()) < capacity:
-                data[selected.keys()].append(person_name)
+            selected = random.choice(list(data.items()))
+            if len(selected[1]) < capacity:
+                data[selected[0]].append(person_name)
                 return True
             elif rm == total_rooms:
                 return 'All rooms are full to capacity'
 
     def reallocate_room(self, person_name, room_name):
-        felo = Fellow.fellow_names
-        staf = Staff.staff_names
+        felo = list(Fellow.fellow_names)
+        staf = list(Staff.staff_names)
+
         if room_name in list(Office.office_n_occupants.keys()):
-            if person_name not in felo or person_name not in staf:
+            if person_name not in felo and person_name not in staf:
                 return 'Offices are allocated to staff and fellows ONLY'
 
             resp = self.reallocate(person_name, room_name, 'office')
@@ -105,6 +106,8 @@ class Room(Office, livin):
         else:
             data = livin.room_n_occupants
             capacity = livin.living_capacity
+        # int() to convert magic mock object to int object
+        capacity = int(capacity)
 
         rm_name = self.get_room(person_name)
         if rm_name is not 'None':
@@ -114,7 +117,7 @@ class Room(Office, livin):
         if len(occupants) < capacity:
             data[room_name].append(person_name)
             return True
-        return room_name + ' has a max of ' + capacity + ' people currently'
+        return room_name + ' has a max of ' + str(capacity) + ' person(s) currently'
 
     def get_room(self, person_name, type_space):
         '''Retrieve the room assigned'''
@@ -136,9 +139,9 @@ class Room(Office, livin):
 
         ret_resp = []
         if filename is not None:
-            resp1 = self.print_file(
+            resp1 = Amity.print_file(
                 filename, 'RnO-Allo-Office', allocated_office)
-            resp2 = self.print_file(
+            resp2 = Amity.print_file(
                 filename, 'RnO-Allo-Livin', allocated_livin)
             ret_resp.append(resp1)
             ret_resp.append(resp2)
@@ -155,8 +158,9 @@ class Room(Office, livin):
 
         un_resp = []
         if filename is not None:
-            resp1 = self.print_file(filename, 'Empty-Office', allocated_office)
-            resp2 = self.print_file(filename, 'Empty-Livin', allocated_livin)
+            resp1 = Amity.print_file(
+                filename, 'Empty-Office', allocated_office)
+            resp2 = Amity.print_file(filename, 'Empty-Livin', allocated_livin)
             un_resp.append(resp1)
             un_resp.append(resp2)
 
@@ -174,22 +178,3 @@ class Room(Office, livin):
         if return_type is 'allocated':
             return allocated
         return unallocated
-
-    def print_file(self, filename, type, data):
-        '''Assign .txt extension'''
-        filename = filename + '-' + type + '.txt'
-        try:
-            with open(filename, 'w') as file:
-                if 'allocated' in type:
-                    # Print room names and Occupants dict
-                    for key, value in data.items():
-                        temp = 'Room Name: ' + key + \
-                            '  Occupants:' + str(value)
-                        file.write(temp)
-                else:
-                    # Print empty rooms list
-                    file.write('Empty Rooms:' + str(data))
-                file.close()
-                return filename + ' successfully saved'
-        except:
-            return 'Failed to save ' + filename + ' successfully.'
