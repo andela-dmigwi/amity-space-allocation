@@ -65,7 +65,11 @@ The default value if it is not provided is N.
     ``DOMINIC STAFF``
  
     ``PATTERSON FELLOW Y``
-
+ 
+    ``DOMINIC STAFF`` 
+    
+    ``PATTERSON FELLOW Y``
+    
     ``LAWRENCE FELLOW Y``
 
 
@@ -76,14 +80,17 @@ The default value if it is not provided is N.
     ``ROOM NAME``
 
     ``-------------------------------------``
+    
+    ``-------------------------------------``
 
     ``MEMBER 1, MEMBER 2, MEMBER 3``
-
-    
+   
     ``ROOM NAME``
 
     ``-------------------------------------``
-
+    
+    ``-------------------------------------``
+    
     ``MEMBER 1, MEMBER 2``
   
 
