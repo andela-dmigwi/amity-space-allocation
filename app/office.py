@@ -5,5 +5,6 @@ class Office(object):
     office_n_occupants = {}
     office_capacity = 6
 
-    def __init__(self, data_from_db):
+    def load_offices(self, data_from_db):
         Office.office_n_occupants.update(data_from_db)
+        return '\t\tOffices details loaded successfully'

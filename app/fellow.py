@@ -4,6 +4,7 @@ class Fellow(object):
     '''
     fellow_names = []
 
-    def __init__(self, fellows):
+    def load_fellows(self, fellows):
         '''Assigned fellows stored in db'''
         Fellow.fellow_names.extend(fellows)
+        return '\t\tFellow names loaded successfully'

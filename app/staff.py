@@ -4,5 +4,6 @@ class Staff(object):
       '''
     staff_names = []
 
-    def __init__(self, staffs):
+    def load_staffs(self, staffs):
         Staff.staff_names.extend(staffs)
+        return '\t\t Staffs details loaded successfully'
