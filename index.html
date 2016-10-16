@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640">
+
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen">
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>Amity-space-allocation by andela-dmigwi</title>
+  </head>
+
+  <body>
+    <a id="forkme_banner" href="https://github.com/andela-dmigwi/amity-space-allocation">View on GitHub</a>
+    <div class="shell">
+
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Amity-space-allocation</h1>
+            <h2>Repo to contain information about Amity Office and Livingspace allocation system.</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
+
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/andela-dmigwi/amity-space-allocation/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/andela-dmigwi/amity-space-allocation/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
+
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <h2>
+<a id="amit-space-allocation-system" class="anchor" href="#amit-space-allocation-system" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Amit Space Allocation System</h2>
+
+<p>Amity is an <a href="http://andela.com">Andela</a> facility that has several rooms in it. A room can be
+either a <strong>Living Space</strong> or an <strong>Office Space</strong>. An Office Space can accomodate a maximum of
+6 people and the Living Space can accomodate a maximum of 4 at ago.  </p>
+
+<p>The Amity Space Allocation allocate people either The Living Space or The Office Space randomly  </p>
+
+<p>A room can be allocated to a staff or a fellow at Andela.Staff cannot be allocated living spaces.
+ Fellows have a choice to choose a living space or not. </p>
+
+<h3>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
+
+<p>Clone <code>git clone https://github.com/andela-dmigwi/amity-space-allocation.git</code></p>
+
+<h3>
+<a id="virtual-environment" class="anchor" href="#virtual-environment" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Virtual Environment</h3>
+
+<p>Navigate to the root folder <code>amity-room-allocation</code> and:</p>
+
+<ul>
+<li>Install virtual environment <code>virtualenv --python=python3 a-venv</code> </li>
+<li>Activate it by <code>source a-venv/bin/activate</code>
+</li>
+</ul>
+
+<h3>
+<a id="run-the-test" class="anchor" href="#run-the-test" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run the Test</h3>
+
+<p>run <code>nosetests</code></p>
+
+<h3>
+<a id="run-the-system" class="anchor" href="#run-the-system" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run the system</h3>
+
+<p>run <code>interactive.py --interactive</code> or <code>interactive.py -i</code></p>
+
+<h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h1>
+
+<h2>
+<a id="create-room" class="anchor" href="#create-room" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create Room</h2>
+
+<p><code>create_room &lt;room_name&gt;...</code>  </p>
+
+<ul>
+<li><p>Creates rooms in Amity. This command allows one to create room<br>
+single room: <code>create_room Dojo</code> -&gt; Create room called <strong>Dojo</strong><br>
+multiple rooms: <code>create_room Dojo,Krypton,Valhala</code> -&gt; Creates three rooms: <strong>Dojo</strong>, <strong>Krypton</strong> and <strong>Valhala</strong></p></li>
+<li>
+<p>After typing the create command, you will be prompted to type:<br>
+<code>O</code> for Office<br>
+      or<br>
+<code>L</code> for Living Space  </p>
+
+<p><em>This will be done for every room you create</em></p>
+</li>
+</ul>
+
+<h2>
+<a id="add-person" class="anchor" href="#add-person" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Add Person</h2>
+
+<p><code>add_person &lt;person_name&gt; &lt;FELLOW|STAFF&gt; [wants_accommodation]</code></p>
+
+<ul>
+<li>Adds a person to the system and allocates the person to a random room. wants_accommodation here is an optional argument which can be either <code>Y</code> or <code>N</code>.<br>
+The default value if it is not provided is N.<br>
+</li>
+</ul>
+
+<h2>
+<a id="reallocate-person" class="anchor" href="#reallocate-person" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Reallocate Person</h2>
+
+<p><code>reallocate_person &lt;person_identifier&gt; &lt;new_room_name&gt;</code></p>
+
+<ul>
+<li>Reallocate the person with person_name to new_room_name.</li>
+</ul>
+
+<h2>
+<a id="load-people" class="anchor" href="#load-people" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Load People</h2>
+
+<p><code>load_people</code></p>
+
+<ul>
+<li>
+<p>Adds people to rooms from a txt file.  </p>
+
+<p><code>OLUWAFEMI FELLOW Y</code></p>
+
+<p><code>DOMINIC STAFF</code></p>
+
+<p><code>PATTERSON FELLOW Y</code></p>
+
+<p><code>DOMINIC STAFF</code> </p>
+
+<p><code>PATTERSON FELLOW Y</code></p>
+
+<p><code>LAWRENCE FELLOW Y</code></p>
+</li>
+</ul>
+
+<h2>
+<a id="print-allocations" class="anchor" href="#print-allocations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Print Allocations</h2>
+
+<p><code>print_allocations [filename]</code></p>
+
+<ul>
+<li>
+<p>Prints a list of allocations onto the screen. The file name is optional, if its not provided, data is not printed in a file.  </p>
+
+<p><code>ROOM NAME</code></p>
+
+<p><code>-------------------------------------</code></p>
+
+<p><code>-------------------------------------</code></p>
+
+<p><code>MEMBER 1, MEMBER 2, MEMBER 3</code></p>
+
+<p><code>ROOM NAME</code></p>
+
+<p><code>-------------------------------------</code></p>
+
+<p><code>-------------------------------------</code></p>
+
+<p><code>MEMBER 1, MEMBER 2</code></p>
+</li>
+</ul>
+
+<h2>
+<a id="print-unallocated" class="anchor" href="#print-unallocated" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Print Unallocated</h2>
+
+<p><code>print_unallocated [filename]</code></p>
+
+<ul>
+<li>Prints a list of unallocated rooms to the screen. The file name is optional, if its not provided, data is not printed in a file.</li>
+</ul>
+
+<h2>
+<a id="print-room" class="anchor" href="#print-room" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Print Room</h2>
+
+<p><code>print_room &lt;room_name&gt;</code></p>
+
+<ul>
+<li>Prints the names of all the people in <code>room_name</code> on the screen.</li>
+</ul>
+
+<h2>
+<a id="save-state" class="anchor" href="#save-state" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Save State</h2>
+
+<p><code>save_state</code></p>
+
+<ul>
+<li>Persists all the data stored in the app to a SQLite database. Retrieves all the data held in the application and saves it in the database</li>
+</ul>
+
+<h2>
+<a id="load-state" class="anchor" href="#load-state" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Load State</h2>
+
+<p><code>load_state</code></p>
+
+<ul>
+<li>Loads data from a database into the application.</li>
+</ul>
+
+<p><strong><a href="https://github.com/Done" class="user-mention">@Done</a> By Migwi-Ndung'u</strong>
+<a href="http://www.github.com/andela-dmigwi">my github repo</a></p>
+      </section>
+
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/andela-dmigwi">andela-dmigwi</a> can be found on <a href="https://github.com/andela-dmigwi/amity-space-allocation">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="https://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
