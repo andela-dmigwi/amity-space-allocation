@@ -2,7 +2,6 @@ from app.livingspace import LivingSpace as livin
 from app.office import Office
 from app.fellow import Fellow
 from app.staff import Staff
-from amity import Amity
 
 
 import random
@@ -131,50 +130,3 @@ class Room(Office, livin):
             if person_name in occupants:
                 rm = room_name
         return rm
-
-    def get_allocations(self, filename=None):
-        '''Display allocated rooms and print to a file if a file is provided'''
-        allocated_office = self.compute(Office.office_n_occupants, 'allocated')
-        allocated_livin = self.compute(livin.room_n_occupants, 'allocated')
-
-        ret_resp = []
-        if filename is not None:
-            resp1 = Amity.print_file(
-                filename, 'RnO-Allo-Office', allocated_office)
-            resp2 = Amity.print_file(
-                filename, 'RnO-Allo-Livin', allocated_livin)
-            ret_resp.append(resp1)
-            ret_resp.append(resp2)
-
-        return [ret_resp, [allocated_office, allocated_livin]]
-
-    def get_unallocated(self, filename=None):
-        '''Display unallocated rooms and print to a file
-          if filename is provided'''
-        allocated_office = self.compute(
-            Office.office_n_occupants, 'unallocated')
-        allocated_livin = self.compute(
-            livin.room_n_occupants, 'unallocated')
-
-        un_resp = []
-        if filename is not None:
-            resp1 = Amity.print_file(
-                filename, 'Empty-Office', allocated_office)
-            resp2 = Amity.print_file(filename, 'Empty-Livin', allocated_livin)
-            un_resp.append(resp1)
-            un_resp.append(resp2)
-
-        return [un_resp, [allocated_office, allocated_livin]]
-
-    def compute(self, data, return_type):
-        '''Compute allocated rooms and unallocated rooms'''
-        allocated = {}
-        unallocated = []
-        for key, value in data.items():
-            if len(value) > 0:
-                allocated[key] = value
-            else:
-                unallocated.append(key)
-        if return_type is 'allocated':
-            return allocated
-        return unallocated
