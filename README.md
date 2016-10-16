@@ -1,9 +1,9 @@
 
 ## Amit Space Allocation System
 
-[![Code Climate](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation/badges/gpa.svg)](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation)
+[![codecov](https://codecov.io/gh/andela-dmigwi/amity-space-allocation/branch/master/graph/badge.svg)](https://codecov.io/gh/andela-dmigwi/amity-space-allocation)
 [![Build Status](https://travis-ci.org/andela-dmigwi/amity-space-allocation.svg?branch=develop-refactor)](https://travis-ci.org/andela-dmigwi/amity-space-allocation)
-[![Test Coverage](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation/badges/coverage.svg)](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation/coverage)
+[![Coverage Status](https://coveralls.io/repos/github/andela-dmigwi/amity-space-allocation/badge.svg)](https://coveralls.io/github/andela-dmigwi/amity-space-allocation)
 [![Issue Count](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation/badges/issue_count.svg)](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation)
 
 
@@ -15,16 +15,33 @@ The Amity Space Allocation allocate people either The Living Space or The Office
 
 A room can be allocated to a staff or a fellow at Andela.Staff cannot be allocated living spaces.
  Fellows have a choice to choose a living space or not. 
+
+### Installation
+Clone `git clone https://github.com/andela-dmigwi/amity-space-allocation.git`
+
+### Virtual Environment
+Navigate to the root folder `amity-room-allocation` and:
+ - Install virtual environment `virtualenv --python=python3 a-venv` 
+ - Activate it by `source a-venv/bin/activate`
+ 
+### Run the Test
+ run `nosetests`
+
+### Run the system 
+ run `interactive.py --interactive` or `interactive.py -i`
+
+
+# Usage
  
 ## Create Room
 `create_room <room_name>...`  
  - Creates rooms in Amity. This command allows one to create room  
-   single room: `create_room Dojo` -> Create room called **Dojo**
+   single room: `create_room Dojo` -> Create room called **Dojo**  
    multiple rooms: `create_room Dojo,Krypton,Valhala` -> Creates three rooms: **Dojo**, **Krypton** and **Valhala**
 
  - After typing the create command, you will be prompted to type:  
    `O` for Office   
-     or  
+          or    
    `L` for Living Space  
 
  *This will be done for every room you create*
@@ -44,8 +61,11 @@ The default value if it is not provided is N.
 - Adds people to rooms from a txt file.  
     
     ``OLUWAFEMI FELLOW Y``
-    ``DOMINIC STAFF`` 
+
+    ``DOMINIC STAFF``
+ 
     ``PATTERSON FELLOW Y``
+
     ``LAWRENCE FELLOW Y``
 
 
@@ -54,11 +74,16 @@ The default value if it is not provided is N.
  - Prints a list of allocations onto the screen. The file name is optional, if its not provided, data is not printed in a file.  
   
     ``ROOM NAME``
+
     ``-------------------------------------``
+
     ``MEMBER 1, MEMBER 2, MEMBER 3``
+
     
     ``ROOM NAME``
+
     ``-------------------------------------``
+
     ``MEMBER 1, MEMBER 2``
   
 
