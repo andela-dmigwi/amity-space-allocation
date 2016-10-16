@@ -39,7 +39,7 @@ class Room(Base):
     occupant6 = Column(String(30), ForeignKey('user.id'))
 
     def __repr__(self):
-        if self.room_type.lower() is 'office':
+        if self.room_type.lower() == 'office':
             return """<Room(room name='%s', occupant1='%s',
             occupant2='%s', occupant3='%s', occupant4='%s',
             occupant5='%s', occupant6='%s')>""" % (self.room_name,
@@ -113,7 +113,7 @@ class Amity(object):
         query_room = session.query(Room).all()
         query_user = session.query(User).all()
         for user in query_user:
-            if user.type_person.lower() is 'fellow':
+            if user.type_person.lower() == 'fellow':
                 fellows.append(user.person_name)
             else:
                 staffs.append(user.person_name)
@@ -122,7 +122,7 @@ class Amity(object):
         livingspaces = {}
         query_room = session.query(Room).all()
         for room in query_room:
-            if room.room_type.lower() is 'office':
+            if room.room_type.lower() == 'office':
                 offices[room.room_name] = [room.occupant1, room.occupant2,
                                            room.occupant3, room.occupant4,
                                            room.occupant5, room.occupant6]
@@ -291,6 +291,6 @@ class Amity(object):
                 allocated[key] = value
             else:
                 unallocated.append(key)
-        if return_type is 'allocated':
+        if return_type == 'allocated':
             return allocated
         return unallocated

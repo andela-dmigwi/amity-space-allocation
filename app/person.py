@@ -10,10 +10,6 @@ class Person(Staff, Fellow):
     '''
 
     def __init__(self):
-        # self.staf = Staff([])
-        # self.fello = Fellow([])
-        # self.offy = Office({})
-        # self.living = LivingSpace({})
         self.room = Room()
 
     def add_person(self, person_name, type_person, want_accomodation='n'):
@@ -23,11 +19,11 @@ class Person(Staff, Fellow):
         if person_name in staf or person_name in felo:
             return person_name + ' already exists'
 
-        elif type_person is 'staff':
-            if 'y' in want_accomodation:
+        elif type_person == 'staff':
+            if 'y' == want_accomodation:
                 return 'staff cannot have accomodation'
 
-            create_staff = self.add(person_name, staf)
+            create_staff = self.add(person_name, type_person)
             if create_staff is not True:
                 return create_staff
 
@@ -37,22 +33,26 @@ class Person(Staff, Fellow):
                 return allocate_office
             return 'Allocated Office:' + str(self.room.get_room(person_name))
 
-        create_fellow = self.add(person_name, felo)
+        create_fellow = self.add(person_name, type_person)
         if create_fellow is not True:
             return create_fellow
 
         # A fellow may or not want accomodation
         return self.room.allocate_space(person_name, want_accomodation)
 
-    def add(self, person_name, data):
+    def add(self, person_name, type_person):
         if person_name == '' or type(person_name) != str:
             return 'Invalid person name type used'
 
         elif len(person_name) > 21:
             return 'Too long person name'
 
-        data.append(person_name)
-        return True
+        if type_person == 'fellow':
+            return self.add_one_fellow(person_name)
+        elif type_person == 'staff':
+            return self.add_one_staff(person_name)
+        else:
+            return " '" + type_person + "' type person is unknown"
 
     def get_room_members(self, room_name):
         if room_name in list(Office.office_n_occupants.keys()):

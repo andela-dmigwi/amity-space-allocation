@@ -1,7 +1,8 @@
 
-## Amit Space Allocation System
+## [Amit Space Allocation System]
 
-[![codecov](https://codecov.io/gh/andela-dmigwi/amity-space-allocation/branch/master/graph/badge.svg)](https://codecov.io/gh/andela-dmigwi/amity-space-allocation)
+Visit [Amit Space Allocation System](http://andela-dmigwi.github.io/amity-space-allocation/) for more information.
+
 [![Build Status](https://travis-ci.org/andela-dmigwi/amity-space-allocation.svg?branch=develop-refactor)](https://travis-ci.org/andela-dmigwi/amity-space-allocation)
 [![Coverage Status](https://coveralls.io/repos/github/andela-dmigwi/amity-space-allocation/badge.svg)](https://coveralls.io/github/andela-dmigwi/amity-space-allocation)
 [![Issue Count](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation/badges/issue_count.svg)](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation)
@@ -110,7 +111,7 @@ The default value if it is not provided is N.
 `load_state `
  - Loads data from a database into the application.
 
-**@Done By Migwi-Ndung'u**
+**@Done By Migwi-Ndung'u**  
 [my github repo](http://www.github.com/andela-dmigwi)
 
 

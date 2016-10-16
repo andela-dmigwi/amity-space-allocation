@@ -19,14 +19,14 @@ class Room(Office, livin):
         if room_name in offices or room_name in livingspaces:
             return room_name + " already exists "
 
-        elif room_name is '' or type(room_name) is not str:
+        elif room_name == '' or type(room_name) is not str:
             return 'Room name used is invalid'
 
-        elif room_type is 'office':
+        elif room_type == 'office':
             Office.office_n_occupants[room_name] = []
             return room_name + ' was created as an Office'
 
-        elif room_type is 'livingspace':
+        elif room_type == 'livingspace':
             livin.room_n_occupants[room_name] = []
             return room_name + ' was created as Living Space'
 
@@ -37,25 +37,30 @@ class Room(Office, livin):
         staff = list(Staff.staff_names)
         if person_name in felo or person_name in staff:
             room_offy = self.get_room(person_name, 'office')
-            if room_offy is not 'None':
+            if room_offy != 'None':
                 return person_name + ' has an Office already'
 
-            ret_val = self.randomly_allocate_rooms(
-                Office.office_capacity, Office.office_n_occupants, person_name)
+            else:
+                ret_val = self.randomly_allocate_rooms(
+                    Office.office_capacity,
+                    Office.office_n_occupants, person_name)
 
-            if ret_val is not True:
-                return ret_val
+                # Incase of an error return it
+                if ret_val is not True:
+                    return ret_val
 
-            if 'y' is want_accomodation:
+            if 'y' == want_accomodation:
                 room_offy = self.get_room(person_name, 'livingspace')
-                if room_offy is not 'None':
+                if room_offy != 'None':
                     return person_name + ' has a Living Space already'
+                else:
+                    resp_val = self.randomly_allocate_rooms(
+                        livin.living_capacity,
+                        livin.room_n_occupants, person_name)
 
-                resp_val = self.randomly_allocate_rooms(
-                    livin.living_capacity, livin.room_n_occupants, person_name)
-
-                if resp_val is not True:
-                    return resp_val
+                    # Incase of an error return it
+                    if resp_val is not True:
+                        return resp_val
 
             office_ass = self.get_room(person_name, 'office')
             livingspace_as = self.get_room(person_name, 'livingspace')
@@ -99,29 +104,32 @@ class Room(Office, livin):
 
     def reallocate(self, person_name, room_name, type_space):
         # recall allocated room first
-        if type_space is 'office':
-            data = Office.office_n_occupants
+        rm_name = self.get_room(person_name, type_space)
+        if type_space == 'office':
             capacity = Office.office_capacity
+            if rm_name != 'None':
+                Office.office_n_occupants[rm_name].remove(person_name)
+            occupants = Office.office_n_occupants[room_name]
         else:
-            data = livin.room_n_occupants
             capacity = livin.living_capacity
+            if rm_name != 'None':
+                livin.room_n_occupants[rm_name].remove(person_name)
+            occupants = livin.room_n_occupants[room_name]
         # int() to convert magic mock object to int object
         capacity = int(capacity)
 
-        rm_name = self.get_room(person_name)
-        if rm_name is not 'None':
-            data.remove(rm_name)
-
-        occupants = data[room_name]
         if len(occupants) < capacity:
-            data[room_name].append(person_name)
+            if type_space == 'office':
+                Office.office_n_occupants[room_name].append(person_name)
+            else:
+                livin.room_n_occupants[room_name].append(person_name)
             return True
         return room_name + ' has a max of ' + str(capacity) + ' person(s) currently'
 
     def get_room(self, person_name, type_space):
         '''Retrieve the room assigned'''
         rm = 'None'
-        if type_space is 'office':
+        if type_space == 'office':
             data = Office.office_n_occupants
         else:
             data = livin.room_n_occupants

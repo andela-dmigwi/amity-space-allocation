@@ -70,7 +70,8 @@ class MyInteractive (cmd.Cmd):
         data = {}
         elements = arg['<room_name>'].replace(',', ' ').split(' ')
         for elem in elements:
-            room_type = input('Type "O" for Office else it will be Living Space\n %s :' % elem)
+            room_type = input(
+                'Type(O/L): "O" -> Office or "L" -> Living Space\n %s :' % elem)
             if 'o' in room_type.lower():
                 data[elem] = 'office'
             else:
@@ -83,32 +84,38 @@ class MyInteractive (cmd.Cmd):
 
     @docopt_cmd
     def do_add_person(self, arg):
-        """Usage: add_person <room_name> (FELLOW|STAFF) [<wants_accommodation>] """
+        """Usage: add_person <person_name> (FELLOW|STAFF) [<wants_accommodation>] """
 
-        person_name = arg["<room_name>"]
-        if arg['FELLOW'] is None:
-            type_person = arg['STAFF']
+        person_name = arg["<person_name>"]
+        stf = arg['STAFF']
+        flw = arg['FELLOW']
+
+        if stf is None:
+            type_person = flw
         else:
-            type_person = arg['FELLOW']
+            type_person = stf
 
-        need = arg['<wants_accommodation>'].lower()
+        need = 'n'
+        if arg['<wants_accommodation>'] is not None:
+            need = arg['<wants_accommodation>']
 
-        print (Person().add_person(person_name, type_person.lower(), need))
+        print (Person().add_person(
+            person_name, type_person.lower(), need.lower()))
         print('=' * 75)
 
     @docopt_cmd
-    def reallocate_person(self, arg):
-        """reallocate_person <person_identifier> <room_name>"""
+    def do_reallocate_person(self, arg):
+        """Usage: reallocate_person <person_name> <room_name>"""
 
-        person_name = arg['<person_identifier>']
+        person_name = arg['<person_name>']
         room_name = arg['<room_name>']
 
-        print(Person().reallocate_person(person_name, room_name))
+        print(Room().reallocate_room(person_name, room_name))
         print('=' * 75)
 
     @docopt_cmd
     def do_print_allocations(self, arg):
-        """print_allocations [-o=filename]"""
+        """Usage: print_allocations [-o=filename]"""
 
         filename = arg['[-o=filename]']
         print(Room().get_allocations(filename))
@@ -116,7 +123,7 @@ class MyInteractive (cmd.Cmd):
 
     @docopt_cmd
     def do_print_unallocated(self, arg):
-        """print_unallocated [-o=filename]"""
+        """Usage: print_unallocated [-o=filename]"""
 
         filename = arg['[-o=filename]']
         print(Room().get_unallocated(filename))
@@ -124,7 +131,7 @@ class MyInteractive (cmd.Cmd):
 
     @docopt_cmd
     def do_print_room(self, arg):
-        """print_room <room_name>"""
+        """Usage: print_room <room_name>"""
 
         room_name = arg['<room_name>']
 
@@ -133,19 +140,19 @@ class MyInteractive (cmd.Cmd):
 
     @docopt_cmd
     def do_save_state(self, arg):
-        """save_state [--db=sqlite_database]"""
+        """Usage: save_state [--db=sqlite_database]"""
 
         print(arg)
 
     @docopt_cmd
     def do_load_state(self, arg):
-        """load_state <sqlite_database>"""
+        """Usage: load_state <sqlite_database>"""
 
         print(arg)
 
     @docopt_cmd
     def do_load_people(self, arg):
-        """load_people <path to text file>"""
+        """Usage: load_people <path to text file>"""
 
         print(arg)
 

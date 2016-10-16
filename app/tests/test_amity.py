@@ -93,7 +93,7 @@ class TestAmity(unittest.TestCase):
             test_Room.insert().execute(sample_data)
 
         self.amity.retrieve_data_from_db(self.session)
-        self.assertNotIn('andela-jkariuki', Fellow.fellow_names)
+        self.assertIn('andela-jkariuki', Fellow.fellow_names)
         self.assertNotIn('php', list(LivingSpace.room_n_occupants.keys()))
 
     @patch('amity.Amity.connect_db')

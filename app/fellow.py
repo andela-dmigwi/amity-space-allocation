@@ -6,5 +6,15 @@ class Fellow(object):
 
     def load_fellows(self, fellows):
         '''Assigned fellows stored in db'''
-        Fellow.fellow_names.extend(fellows)
-        return '\t\tFellow names loaded successfully'
+        if type(fellows) is list:
+            Fellow.fellow_names.extend(fellows)
+            return '\t\t Fellow names loaded successfully'
+        else:
+            return '\t\t Failed: Incorrect Fellow details'
+
+    def add_one_fellow(self, name):
+        if type(name) is str:
+            Fellow.fellow_names.append(name)
+            return True
+        else:
+            return '\t\t Failed: Incorrect Fellow details'
