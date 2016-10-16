@@ -4,7 +4,7 @@
 Visit [Amit Space Allocation System](http://andela-dmigwi.github.io/amity-space-allocation/) for more information.
 
 [![Build Status](https://travis-ci.org/andela-dmigwi/amity-space-allocation.svg?branch=develop-refactor)](https://travis-ci.org/andela-dmigwi/amity-space-allocation)
-[![Coverage Status](https://coveralls.io/repos/github/andela-dmigwi/amity-space-allocation/badge.svg)](https://coveralls.io/github/andela-dmigwi/amity-space-allocation)
+[![Coverage Status](https://coveralls.io/repos/github/andela-dmigwi/amity-space-allocation/badge.svg?branch=develop-refactor)](https://coveralls.io/github/andela-dmigwi/amity-space-allocation?branch=develop-refactor)
 [![Issue Count](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation/badges/issue_count.svg)](https://codeclimate.com/github/andela-dmigwi/amity-space-allocation)
 
 
