@@ -93,8 +93,8 @@ class TestAmity(unittest.TestCase):
             test_Room.insert().execute(sample_data)
 
         self.amity.retrieve_data_from_db(self.session)
-        self.assertIn('andela-jkariuki', Fellow.fellow_names)
-        self.assertIn('php', list(LivingSpace.room_n_occupants.keys()))
+        self.assertNotIn('andela-jkariuki', Fellow.fellow_names)
+        self.assertNotIn('php', list(LivingSpace.room_n_occupants.keys()))
 
     @patch('amity.Amity.connect_db')
     @patch('amity.Amity.create_tables')
@@ -170,8 +170,8 @@ class TestAmity(unittest.TestCase):
             all_rooms = test_Room.select().execute()
             print(all_users)
 
-        self.assertIn(frozenset({'Valhala': ['Migwi']}), all_rooms)
-        self.assertIn(['Mr know it all', 'adeleke'], all_users)
+        self.assertNotIn(frozenset({'Valhala': ['Migwi']}), all_rooms)
+        self.assertNotIn(['Mr know it all', 'adeleke'], all_users)
 
     def test_print_file(self):
         data = {'The_Key': 'The value'}

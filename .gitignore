@@ -2,3 +2,7 @@
 a-venv
 *.pyc
 *.pyo
+
+.coverage
+.coverage.*
+coverage.xml
