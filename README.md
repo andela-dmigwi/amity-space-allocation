@@ -44,8 +44,11 @@ The default value if it is not provided is N.
 - Adds people to rooms from a txt file.  
     
     ``OLUWAFEMI FELLOW Y``
+    
     ``DOMINIC STAFF`` 
+    
     ``PATTERSON FELLOW Y``
+    
     ``LAWRENCE FELLOW Y``
 
 
@@ -54,11 +57,16 @@ The default value if it is not provided is N.
  - Prints a list of allocations onto the screen. The file name is optional, if its not provided, data is not printed in a file.  
   
     ``ROOM NAME``
+    
     ``-------------------------------------``
+    
     ``MEMBER 1, MEMBER 2, MEMBER 3``
     
+    
     ``ROOM NAME``
+    
     ``-------------------------------------``
+    
     ``MEMBER 1, MEMBER 2``
   
 
