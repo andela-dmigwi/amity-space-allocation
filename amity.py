@@ -193,27 +193,6 @@ class Amity(object):
 
         session.add_all(ordered_rooms)
 
-    def print_file(self, filename, type, data):
-        '''Assign .txt extension'''
-        filename = filename + '-' + type + '.txt'
-        try:
-            with open(filename, 'w') as file:
-                if 'allocated' in type:
-                    # Print room names and Occupants dict
-                    for key, value in data.items():
-                        temp = 'Room Name: ' + key + \
-                            '  Occupants:' + str(value) + \
-                            '\n\r'
-                        file.write(temp)
-                else:
-                    # Print empty rooms list
-                    temp = 'Empty Rooms:' + str(data) + '\n\r'
-                    file.write(temp)
-                file.close()
-                return filename + ' successfully saved'
-        except:
-            return 'Failed to save ' + filename + ' successfully.'
-
     def load_people(self, filename='people.txt'):
         '''loads people into the database'''
         with open(filename, 'r') as input_file:
@@ -248,39 +227,30 @@ class Amity(object):
 
     def get_allocations(self, filename=None):
         '''Display allocated rooms and print to a file if a file is provided'''
-        allocated_office = self.compute(Office.office_n_occupants, 'allocated')
-        allocated_livin = self.compute(
-            LivingSpace.room_n_occupants, 'allocated')
+        allo_office = self.compute(Office.office_n_occupants, 'allocated')
+        allo_livin = self.compute(LivingSpace.room_n_occupants, 'allocated')
+        allo_office.update(allo_livin)
 
-        ret_resp = []
+        resp1 = 'No File Saved'
+        resp2 = 'No File Saved'
         if filename is not None:
-            resp1 = Amity.print_file(
-                filename, 'RnO-Allo-Office', allocated_office)
-            resp2 = Amity.print_file(
-                filename, 'RnO-Allo-Livin', allocated_livin)
-            ret_resp.append(resp1)
-            ret_resp.append(resp2)
-
-        return [ret_resp, [allocated_office, allocated_livin]]
+            resp1 = Amity().print_file(filename, 'RnO-Office', allo_office)
+            resp2 = Amity().print_file(filename, 'RnO-Livin', allo_livin)
+        return [allo_office, resp1, resp2]
 
     def get_unallocated(self, filename=None):
         '''Display unallocated rooms and print to a file
           if filename is provided'''
-        allocated_office = self.compute(
-            Office.office_n_occupants, 'unallocated')
-        allocated_livin = self.compute(
-            LivingSpace.room_n_occupants, 'unallocated')
+        allo_office = self.compute(Office.office_n_occupants, 'unallocated')
+        allo_livin = self.compute(LivingSpace.room_n_occupants, 'unallocated')
+        allo_office.extend(allo_livin)
 
-        un_resp = []
+        resp1 = 'No File Saved'
+        resp2 = 'No File Saved'
         if filename is not None:
-            resp1 = Amity.print_file(
-                filename, 'Empty-Office', allocated_office)
-            resp2 = Amity.print_file(
-                filename, 'Empty-Livin', allocated_livin)
-            un_resp.append(resp1)
-            un_resp.append(resp2)
-
-        return [un_resp, [allocated_office, allocated_livin]]
+            resp1 = Amity().print_file(filename, 'Empty-Office', allo_office)
+            resp2 = Amity().print_file(filename, 'Empty-Livin', allo_livin)
+        return [allo_office, resp1, resp2]
 
     def compute(self, data, return_type):
         '''Compute allocated rooms and unallocated rooms'''
@@ -294,3 +264,24 @@ class Amity(object):
         if return_type == 'allocated':
             return allocated
         return unallocated
+
+    def print_file(self, filename, type, data):
+        '''Assign .txt extension'''
+        filename = filename + '-' + type + '.txt'
+        try:
+            with open(filename, 'w') as file:
+                if 'RnO' in type:
+                    # Print room names and Occupants dict
+                    for key, value in data.items():
+                        temp = 'Room Name: ' + key + \
+                            '  Occupants:' + str(value) + \
+                            '\n\r'
+                        file.write(temp)
+                elif 'Empty' in type:
+                    # Print empty rooms list
+                    temp = 'Empty Rooms:' + str(data) + '\n\r'
+                    file.write(temp)
+                file.close()
+                return '"' + filename + '"" successfully saved'
+        except:
+            return 'Failed to save ' + filename + ' successfully.'

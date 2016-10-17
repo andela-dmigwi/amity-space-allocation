@@ -20,6 +20,7 @@ import cmd
 from docopt import docopt, DocoptExit
 from app.room import Room
 from app.person import Person
+from amity import Amity
 
 
 def docopt_cmd(func):
@@ -114,22 +115,6 @@ class MyInteractive (cmd.Cmd):
         print('=' * 75)
 
     @docopt_cmd
-    def do_print_allocations(self, arg):
-        """Usage: print_allocations [-o=filename]"""
-
-        filename = arg['[-o=filename]']
-        print(Room().get_allocations(filename))
-        print('=' * 75)
-
-    @docopt_cmd
-    def do_print_unallocated(self, arg):
-        """Usage: print_unallocated [-o=filename]"""
-
-        filename = arg['[-o=filename]']
-        print(Room().get_unallocated(filename))
-        print('=' * 75)
-
-    @docopt_cmd
     def do_print_room(self, arg):
         """Usage: print_room <room_name>"""
 
@@ -139,27 +124,60 @@ class MyInteractive (cmd.Cmd):
         print('=' * 75)
 
     @docopt_cmd
+    def do_print_allocations(self, arg):
+        """Usage: print_allocations [<filename>]"""
+
+        filename = arg['<filename>']
+        list_return = Amity().get_allocations(filename)
+        if type(list_return[0]) is list:
+            print (list_return[0])
+        else:
+            for key, value in list_return[0].items():
+                print('\tRoom Name:  ' + key)
+                print('\t-' * 50)
+                print('\tOccupants: ' + str(value))
+
+        print('Office: ' + list_return[1])
+        print('Living Space: ' + list_return[2])
+        print('=' * 75)
+
+    @docopt_cmd
+    def do_print_unallocated(self, arg):
+        """Usage: print_unallocated [<filename>]"""
+
+        filename = arg['<filename>']
+        list_return = Amity().get_unallocated(filename)
+        for key, value in list_return[0].items():
+            print('\tRoom Name:  ' + key)
+            print('\t-' * 50)
+            print('\tOccupants: ' + str(value))
+
+        print('Office: ' + list_return[1])
+        print('Living Space: ' + list_return[2])
+        print('=' * 75)
+
+    @docopt_cmd
     def do_save_state(self, arg):
-        """Usage: save_state [--db=sqlite_database]"""
+        """Usage: save_state"""
 
         print(arg)
 
     @docopt_cmd
     def do_load_state(self, arg):
-        """Usage: load_state <sqlite_database>"""
+        """Usage: load_state """
 
         print(arg)
 
     @docopt_cmd
     def do_load_people(self, arg):
-        """Usage: load_people <path to text file>"""
+        """Usage: load_people <path_to_text_file>"""
 
         print(arg)
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
 
-        print('Good Bye!')
+        print('\t\t\tGood Bye!')
         exit()
 
 opt = docopt(__doc__, sys.argv[1:])
