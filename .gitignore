@@ -1,4 +1,10 @@
 *.md~
-venv
+a-venv
 *.pyc
 *.pyo
+.coverage
+.coverage.*
+coverage.xml
+*Livin.txt
+*Office.txt
+*.db
