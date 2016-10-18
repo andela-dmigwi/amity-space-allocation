@@ -199,27 +199,27 @@ class TestAmity(unittest.TestCase):
 
     @patch('amity.Amity.compute')
     @patch('amity.Amity.print_file')
-    def test_get_allocations(self, mock_compute, mock_print_file):
+    def test_get_allocations(self, mock_print_file, mock_compute):
         mock_compute.return_value = {'Amity': ['Eston Mwaura']}
         mock_print_file.return_value = 'Successful'
         room_details = self.amity.get_allocations('test.txt')
 
-        details1 = [{'Amity': ['Eston Mwaura']}, {'Amity': ['Eston Mwaura']}]
-        details2 = ['Successful', 'Successful']
+        details1 = {'Amity': ['Eston Mwaura']}
+        details2 = 'Successful'
 
         self.assertIn(details1, room_details)
         self.assertIn(details2, room_details)
 
     @patch('amity.Amity.compute')
     @patch('amity.Amity.print_file')
-    def test_get_unallocated(self, mock_compute, mock_print_file):
+    def test_get_unallocated(self, mock_print_file, mock_compute):
         mock_compute.return_value = ['Amity']
         mock_print_file.return_value = 'Successful'
 
         rum = self.amity.get_unallocated('sample.txt')
 
-        response1 = [['Amity'], ['Amity']]
-        response2 = ['Successful', 'Successful']
+        response1 = ['Amity', 'Amity']
+        response2 = 'Successful'
 
         self.assertIn(response1, rum)
         self.assertIn(response2, rum)
@@ -236,6 +236,21 @@ class TestAmity(unittest.TestCase):
 
         computed = self.amity.compute(data, 'unallocated')
         self.assertEqual(computed, ['Amity'])
+
+    @patch.dict('app.office.Office.office_n_occupants',
+                {'Dojo': ['Njira']})
+    @patch.dict('app.livingspace.LivingSpace.room_n_occupants',
+                {'Valhala': ['Edwin']})
+    @patch('app.staff.Staff.staff_names')
+    @patch('app.fellow.Fellow.fellow_names')
+    def test_get_all_unallocated_people(self,
+                                        mock_fellow_names, mock_staff_names):
+        mock_fellow_names.__iter__.return_value = ['Lolo', 'Edwin']
+        mock_staff_names.__iter__.return_value = ['Eston', 'Njira']
+
+        check = self.amity.get_all_unallocated_people()
+        self.assertIn('Lolo', check[0])
+        self.assertIn('Eston', check[2])
 
 
 if __name__ == '__main__':

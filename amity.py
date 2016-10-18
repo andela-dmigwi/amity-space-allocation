@@ -6,7 +6,7 @@ from app.person import Person
 from app.livingspace import LivingSpace
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import (create_engine, Sequence, Column, Integer,
-                        String, ForeignKey, MetaData)
+                        String, ForeignKey)
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -68,21 +68,15 @@ class Amity(object):
         self.livin = LivingSpace()
         self.offy = Office()
 
-    def connect_db(self):
-        return create_engine('sqlite:///amity.db')
+    def connect_db(self, db_name=None):
+        if db_name is not None:
+            name = 'sqlite:///' + db_name[:db_name.index('.')] + '.db'
+        else:
+            name = 'sqlite:///amity.db'
+        return create_engine(name)
 
     def create_tables(self):
         engine = self.connect_db()
-        status_user = engine.dialect.has_table(
-            engine.connect(), "user")
-        status_room = engine.dialect.has_table(
-            engine.connect(), "room")
-
-        print(status_room)
-        print(status_user)
-        # If any of the two tables is available drop them
-        # if status_room or status_user:
-        #     Base.metadata.drop_all()
 
         Base.metadata.create_all(engine)
 
@@ -108,12 +102,10 @@ class Amity(object):
     def retrieve_data_from_db(self, session):
         fellows = []
         staffs = []
-        print(User)
-        print(Room)
         query_room = session.query(Room).all()
         query_user = session.query(User).all()
         for user in query_user:
-            if user.type_person.lower() == 'fellow':
+            if user.type_person == 'fellow':
                 fellows.append(user.person_name)
             else:
                 staffs.append(user.person_name)
@@ -122,25 +114,50 @@ class Amity(object):
         livingspaces = {}
         query_room = session.query(Room).all()
         for room in query_room:
+            liv = []
+            off = []
             if room.room_type.lower() == 'office':
-                offices[room.room_name] = [room.occupant1, room.occupant2,
-                                           room.occupant3, room.occupant4,
-                                           room.occupant5, room.occupant6]
+                if room.occupant1 != '':
+                    off.append(room.occupant1)
+
+                if room.occupant2 != '':
+                    off.append(room.occupant2)
+
+                if room.occupant3 != '':
+                    off.append(room.occupant3)
+
+                if room.occupant4 != '':
+                    off.append(room.occupant4)
+
+                if room.occupant5 != '':
+                    off.append(room.occupant5)
+
+                if room.occupant6 != '':
+                    off.append(room.occupant6)
+
+                offices[room.room_name] = off
+
             else:
-                livingspaces[room.room_name] = [room.occupant1, room.occupant2,
-                                                room.occupant3, room.occupant4]
-        # print(fellows)
-        # print(staffs)
-        # print(livingspaces)
-        # print(offices)
+                if room.occupant1 != '':
+                    liv.append(room.occupant1)
+
+                if room.occupant2 != '':
+                    liv.append(room.occupant2)
+
+                if room.occupant3 != '':
+                    liv.append(room.occupant3)
+
+                if room.occupant4 != '':
+                    liv.append(room.occupant4)
+                    livingspaces[room.room_name] = liv
         # load data from db
         print(self.felo.load_fellows(fellows))
         print(self.staf.load_staffs(staffs))
         print(self.livin.load_livingspaces(livingspaces))
         print(self.offy.load_offices(offices))
 
-    def save_state(self):
-        engine = self.connect_db()
+    def save_state(self, db=None):
+        engine = self.connect_db(db)
         print("Please Wait... This may take some few minutes.")
         self.create_tables()
 
@@ -183,7 +200,7 @@ class Amity(object):
             room.occupant2 = '' if len(value) < 2 else value[1]
             room.occupant3 = '' if len(value) < 3 else value[2]
             room.occupant4 = '' if len(value) < 4 else value[3]
-            if room.room_name in Office.office_n_occupants:
+            if room.room_name in LivingSpace.room_n_occupants:
                 room.room_type = 'livingspace'
             else:
                 room.room_type = 'office'
@@ -198,19 +215,22 @@ class Amity(object):
         with open(filename, 'r') as input_file:
             people = input_file.readlines()
             data = []
-            for person in people:
-                person = person.split(' ')
-                if person:
-                    person_name = person[0]
-                    wants_accomodation = 'N'
-
-                    if 'STAFF' in person:
-                        type_person = 'STAFF'
+            for persn in people:
+                persn = persn.split(' ')
+                if persn:
+                    wants_accomodation = 'n'
+                    person_name = persn[0]
+                    if 'STAFF' in persn:
+                        type_person = 'staff'
                     else:
-                        type_person = 'FELLOW'
+                        type_person = 'fellow'
 
-                    if 'Y' in person:
-                        wants_accomodation = 'Y'
+                    if len(persn) > 2:
+                        ps = persn[2]
+                        if '\n' in ps:
+                            wants_accomodation = ps[:ps.index('\n')].lower()
+                        else:
+                            wants_accomodation = ps.lower()
 
                     arg_dict = {
                         "person_name": person_name,
@@ -219,17 +239,21 @@ class Amity(object):
                     }
                 data.append(arg_dict)
         for entry in data:
-            ret_val = Person.add_person(
+            ret_val = Person().add_person(
                 person_name=entry["person_name"],
                 type_person=entry["type_person"],
                 want_accomodation=entry["wants_accomodation"])
-            print(ret_val)
+            if ret_val == 'None':
+                print ('No Rooms Available')
+            else:
+                print(ret_val)
 
     def get_allocations(self, filename=None):
         '''Display allocated rooms and print to a file if a file is provided'''
         allo_office = self.compute(Office.office_n_occupants, 'allocated')
         allo_livin = self.compute(LivingSpace.room_n_occupants, 'allocated')
-        allo_office.update(allo_livin)
+        if type(allo_office) is dict and type(allo_livin) is dict:
+            allo_office.update(allo_livin)
 
         resp1 = 'No File Saved'
         resp2 = 'No File Saved'
@@ -243,7 +267,8 @@ class Amity(object):
           if filename is provided'''
         allo_office = self.compute(Office.office_n_occupants, 'unallocated')
         allo_livin = self.compute(LivingSpace.room_n_occupants, 'unallocated')
-        allo_office.extend(allo_livin)
+        if type(allo_office) is list and type(allo_livin) is list:
+            allo_office.extend(allo_livin)
 
         resp1 = 'No File Saved'
         resp2 = 'No File Saved'
@@ -265,22 +290,49 @@ class Amity(object):
             return allocated
         return unallocated
 
+    def get_all_unallocated_people(self, filename=None):
+        fellows = list(Fellow.fellow_names)
+        staff = list(Staff.staff_names)
+
+        occupants = []
+        for key, value in LivingSpace.room_n_occupants.items():
+            occupants.extend(value)
+
+        for key, value in Office.office_n_occupants.items():
+            occupants.extend(value)
+
+        set_occupants = set(occupants)
+        fell = set(fellows) - set_occupants
+        sta = set(staff) - set_occupants
+        print (type(fell))
+        print (type(sta))
+
+        resp1 = 'No File Saved'
+        resp2 = 'No File Saved'
+        if filename is not None:
+            resp1 = Amity().print_file(filename, 'unallo_fellows', fell)
+            resp2 = Amity().print_file(filename, 'unallo_staff', sta)
+
+        return [fell, resp1, sta, resp2]
+
     def print_file(self, filename, type, data):
         '''Assign .txt extension'''
         filename = filename + '-' + type + '.txt'
         try:
             with open(filename, 'w') as file:
+                temp = ''
                 if 'RnO' in type:
                     # Print room names and Occupants dict
                     for key, value in data.items():
                         temp = 'Room Name: ' + key + \
                             '  Occupants:' + str(value) + \
                             '\n\r'
-                        file.write(temp)
                 elif 'Empty' in type:
                     # Print empty rooms list
                     temp = 'Empty Rooms:' + str(data) + '\n\r'
-                    file.write(temp)
+                elif 'unallo_' in type:
+                    temp = 'Unallocated people\n' + str(data)
+                file.write(temp)
                 file.close()
                 return '"' + filename + '"" successfully saved'
         except:

@@ -134,8 +134,28 @@ class MyInteractive (cmd.Cmd):
         else:
             for key, value in list_return[0].items():
                 print('\tRoom Name:  ' + key)
-                print('\t-' * 50)
+                print('\t' + '-' * 50)
                 print('\tOccupants: ' + str(value))
+                print('\n')
+
+        print('Office: ' + list_return[1])
+        print('Living Space: ' + list_return[2])
+        print('=' * 75)
+
+    @docopt_cmd
+    def do_print_empty_rooms(self, arg):
+        """Usage: print_empty_rooms [<filename>]"""
+
+        filename = arg['<filename>']
+        list_return = Amity().get_unallocated(filename)
+        if type(list_return[0]) is list:
+            print (list_return[0])
+        else:
+            for key, value in list_return[0].items():
+                print('\tRoom Name:  ' + key)
+                print('\t' + '-' * 50)
+                print('\tOccupants: ' + str(value))
+                print('\n')
 
         print('Office: ' + list_return[1])
         print('Living Space: ' + list_return[2])
@@ -143,42 +163,45 @@ class MyInteractive (cmd.Cmd):
 
     @docopt_cmd
     def do_print_unallocated(self, arg):
-        """Usage: print_unallocated [<filename>]"""
+        """"Usage: print_unallocated [<filename>]"""
 
         filename = arg['<filename>']
-        list_return = Amity().get_unallocated(filename)
-        for key, value in list_return[0].items():
-            print('\tRoom Name:  ' + key)
-            print('\t-' * 50)
-            print('\tOccupants: ' + str(value))
-
-        print('Office: ' + list_return[1])
-        print('Living Space: ' + list_return[2])
+        list_return = Amity().get_all_unallocated_people(filename)
+        print('Unallocated Fellows : ' + str(list_return[0]))
+        print (list_return[1])
+        print ('Unallocated Staffs: ' + str(list_return[2]))
+        print (list_return[3])
         print('=' * 75)
 
     @docopt_cmd
-    def do_save_state(self, arg):
-        """Usage: save_state"""
+    def do_load_people(self, arg):
+        """Usage: load_people"""
 
-        print(arg)
+        Amity().load_people()
+
+    @docopt_cmd
+    def do_save_state(self, arg):
+        """Usage: save_state """
+        db = None
+
+        # if arg['<sqlite_database>'] is not None:
+        #     db = arg['<sqlite_database>']
+
+        Amity().save_state(db)
 
     @docopt_cmd
     def do_load_state(self, arg):
         """Usage: load_state """
 
-        print(arg)
-
-    @docopt_cmd
-    def do_load_people(self, arg):
-        """Usage: load_people <path_to_text_file>"""
-
-        print(arg)
+        # print(arg)
+        Amity().load_state()
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
 
         print('\t\t\tGood Bye!')
         exit()
+
 
 opt = docopt(__doc__, sys.argv[1:])
 
