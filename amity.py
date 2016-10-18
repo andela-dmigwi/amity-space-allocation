@@ -78,6 +78,12 @@ class Amity(object):
     def create_tables(self):
         engine = self.connect_db()
 
+        # check if the tables exist then drop them all if they exist
+        if engine.dialect.has_table(engine.connect(), "user"):
+            User.__table__.drop(engine)
+        if engine.dialect.has_table(engine.connect(), "room"):
+            Room.__table__.drop(engine)
+
         Base.metadata.create_all(engine)
 
     def load_state(self):
@@ -182,10 +188,14 @@ class Amity(object):
         people.extend(list(Staff.staff_names))
         ordered_users = []
         for person in people:
-            user = User()
-            user.person_name
-            user.type_person
-            ordered_users.append(user)
+            if person is not None and person != 'None':
+                user = User()
+                user.person_name = person
+                if person in list(Fellow.fellow_names):
+                    user.type_person = 'fellow'
+                elif person in list(Staff.staff_names):
+                    user.type_person = 'staff'
+                ordered_users.append(user)
 
         session.add_all(ordered_users)
 

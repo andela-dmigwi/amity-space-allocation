@@ -14,7 +14,7 @@ class Room(Office, livin):
         pass
 
     def create_room(self, room_name, room_type):
-        offices = list(Office. office_n_occupants.keys())
+        offices = list(Office.office_n_occupants.keys())
         livingspaces = list(livin.room_n_occupants.keys())
         if room_name in offices or room_name in livingspaces:
             return room_name + " already exists "

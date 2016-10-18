@@ -184,9 +184,6 @@ class MyInteractive (cmd.Cmd):
         """Usage: save_state """
         db = None
 
-        # if arg['<sqlite_database>'] is not None:
-        #     db = arg['<sqlite_database>']
-
         Amity().save_state(db)
 
     @docopt_cmd
