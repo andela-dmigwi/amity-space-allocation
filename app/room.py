@@ -62,9 +62,10 @@ class Room(Office, livin):
                     if resp_val is not True:
                         return resp_val
 
-            office_ass = self.get_room(person_name, 'office')
-            livingspace_as = self.get_room(person_name, 'livingspace')
-            return 'Allocated Office Space :' + office_ass + ' \n Allocated Living Space :' + livingspace_as
+            office_assgn = self.get_room(person_name, 'office')
+            livingspace_assgn = self.get_room(person_name, 'livingspace')
+            return ('Allocated Office Space : %s \nAllocated Living Space : %s'
+                    % (office_assgn, livingspace_assgn))
 
         return 'Offices are allocated to staff and fellows ONLY'
 
@@ -124,7 +125,7 @@ class Room(Office, livin):
             else:
                 livin.room_n_occupants[room_name].append(person_name)
             return True
-        return room_name + ' has a max of ' + str(capacity) + ' person(s) currently'
+        return '%s has a max of %s person(s) currently' % (room_name, capacity)
 
     def get_room(self, person_name, type_space):
         '''Retrieve the room assigned'''

@@ -63,16 +63,18 @@ class Amity(object):
 
     def __init__(self):
         self.engine = ''
-        self.felo = Fellow()
-        self.staf = Staff()
-        self.livin = LivingSpace()
-        self.offy = Office()
+        self.fellow = Fellow()
+        self.staff = Staff()
+        self.living_space = LivingSpace()
+        self.office = Office()
 
     def connect_db(self, db_name=None):
         if db_name is not None:
             name = 'sqlite:///' + db_name[:db_name.index('.')] + '.db'
         else:
             name = 'sqlite:///amity.db'
+        # db_name = db_name[:db_name.index('.')] or 'amity'
+        # return create_engine(db_name+'.db')
         return create_engine(name)
 
     def create_tables(self):
@@ -106,68 +108,59 @@ class Amity(object):
         print("Load State successfully completed")
 
     def retrieve_data_from_db(self, session):
-        fellows = []
-        staffs = []
         query_room = session.query(Room).all()
         query_user = session.query(User).all()
-        for user in query_user:
-            if user.type_person == 'fellow':
-                fellows.append(user.person_name)
-            else:
-                staffs.append(user.person_name)
+        fellows = [
+            user.person_name for user in query_user
+            if user.type_person == 'fellow']
+        staffs = [
+            user.person_name for user in query_user
+            if user.type_person == 'staff']
 
         offices = {}
         livingspaces = {}
         query_room = session.query(Room).all()
         for room in query_room:
-            liv = []
-            off = []
+            livingspace_occupants = []
+            office_occupants = []
             if room.room_type.lower() == 'office':
-                if room.occupant1 != '':
-                    off.append(room.occupant1)
+                office_occupants.append(room.occupant1)
+                office_occupants.append(room.occupant2)
+                office_occupants.append(room.occupant3)
+                office_occupants.append(room.occupant4)
+                office_occupants.append(room.occupant5)
+                office_occupants.append(room.occupant6)
+                # remove all '' entries
+                office_occupants = [
+                    ocupant for ocupant in office_occupants if ocupant != '']
 
-                if room.occupant2 != '':
-                    off.append(room.occupant2)
-
-                if room.occupant3 != '':
-                    off.append(room.occupant3)
-
-                if room.occupant4 != '':
-                    off.append(room.occupant4)
-
-                if room.occupant5 != '':
-                    off.append(room.occupant5)
-
-                if room.occupant6 != '':
-                    off.append(room.occupant6)
-
-                offices[room.room_name] = off
+                offices[room.room_name] = office_occupants
 
             else:
-                if room.occupant1 != '':
-                    liv.append(room.occupant1)
+                livingspace_occupants.append(room.occupant1)
+                livingspace_occupants.append(room.occupant2)
+                livingspace_occupants.append(room.occupant3)
+                livingspace_occupants.append(room.occupant4)
 
-                if room.occupant2 != '':
-                    liv.append(room.occupant2)
-
-                if room.occupant3 != '':
-                    liv.append(room.occupant3)
-
-                if room.occupant4 != '':
-                    liv.append(room.occupant4)
-                    livingspaces[room.room_name] = liv
+                # remove all '' entries
+                livingspace_occupants = [
+                    ocupant for ocupant in livingspace_occupants
+                    if ocupant != '']
+                livingspaces[room.room_name] = livingspace_occupants
         # load data from db
-        print(self.felo.load_fellows(fellows))
-        print(self.staf.load_staffs(staffs))
-        print(self.livin.load_livingspaces(livingspaces))
-        print(self.offy.load_offices(offices))
+        text = self.fellow.load_fellows(fellows)
+        text = text + '\n%s' % self.staff.load_staffs(staffs)
+        text = text + \
+            '\n%s' % self.living_space.load_livingspaces(livingspaces)
+        text = text + '\n%s' % self.office.load_offices(offices)
+
+        print(text)
 
     def save_state(self, db=None):
         engine = self.connect_db(db)
         print("Please Wait... This may take some few minutes.")
         self.create_tables()
 
-        # do something
         Session = sessionmaker(bind=engine)
         Session.configure(bind=engine)
         session = Session()
@@ -276,18 +269,20 @@ class Amity(object):
     def get_unallocated(self, filename=None):
         '''Display unallocated rooms and print to a file
           if filename is provided'''
-        allo_office = self.compute(Office.office_n_occupants, 'unallocated')
-        allo_livin = self.compute(LivingSpace.room_n_occupants, 'unallocated')
+        allo_offices = self.compute(Office.office_n_occupants, 'unallocated')
+        allo_livins = self.compute(LivingSpace.room_n_occupants, 'unallocated')
 
-        resp1 = 'No File Saved'
-        resp2 = 'No File Saved'
+        response1 = 'No File Saved'
+        response2 = 'No File Saved'
         if filename is not None:
-            resp1 = Amity().print_file(filename, 'Empty-Office', allo_office)
-            resp2 = Amity().print_file(filename, 'Empty-Livin', allo_livin)
+            response1 = Amity().print_file(
+                filename, 'Empty-Office', allo_offices)
+            response2 = Amity().print_file(
+                filename, 'Empty-Livin', allo_livins)
 
-        if type(allo_office) is list and type(allo_livin) is list:
-            allo_office.extend(allo_livin)
-        return [allo_office, resp1, resp2]
+        if type(allo_offices) is list and type(allo_livins) is list:
+            allo_offices.extend(allo_livins)
+        return [allo_offices, response1, response2]
 
     def compute(self, data, return_type):
         '''Compute allocated rooms and unallocated rooms'''
