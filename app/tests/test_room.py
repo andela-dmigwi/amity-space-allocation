@@ -43,7 +43,7 @@ class TestRoom(unittest.TestCase):
         value = self.room.allocate_space('Gaamuwa', 'y')
         mock_get_room.return_value = 'None'
         self.assertEqual(
-            'Allocated Office Space :None \n Allocated Living Space :None',
+            'Allocated Office Space : None \nAllocated Living Space : None',
             value)
 
     def test_randomly_allocate(self):
