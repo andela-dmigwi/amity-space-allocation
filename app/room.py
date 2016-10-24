@@ -90,7 +90,8 @@ class Room(Office, livin):
             resp = self.reallocate(person_name, room_name, 'office')
             if resp is not True:
                 return resp
-            return person_name + ' was allocated an Office ' + room_name
+            return ('%s was allocated an Office %s'
+                    % (person_name, room_name))
 
         elif room_name in list(livin.room_n_occupants.keys()):
             if person_name not in felo:
@@ -99,7 +100,8 @@ class Room(Office, livin):
             ret = self.reallocate(person_name, room_name, 'livingspace')
             if ret is not True:
                 return ret
-            return person_name + ' was allocated a Living Space ' + room_name
+            return ('%s was allocated a Living Space %s'
+                    % (person_name, room_name))
 
         return 'Room Not Found in the system'
 
