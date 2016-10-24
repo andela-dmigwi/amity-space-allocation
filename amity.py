@@ -253,46 +253,49 @@ class Amity(object):
 
     def get_allocations(self, filename=None):
         '''Display allocated rooms and print to a file if a file is provided'''
-        allo_office = self.compute(Office.office_n_occupants, 'allocated')
-        allo_livin = self.compute(LivingSpace.room_n_occupants, 'allocated')
+        allocated_offices = self.compute_rooms(
+            Office.office_n_occupants, 'allocated')
+        allocated_livingSpaces = self.compute_rooms(
+            LivingSpace.room_n_occupants, 'allocated')
 
-        resp1 = 'No File Saved'
-        resp2 = 'No File Saved'
+        response_offices = 'No File Saved'
+        response_livingspaces = 'No File Saved'
         if filename is not None:
-            resp1 = Amity().print_file(filename, 'RnO-Office', allo_office)
-            resp2 = Amity().print_file(filename, 'RnO-Livin', allo_livin)
+            response_offices = Amity().print_file(
+                filename, 'RnO-Office', allocated_offices)
+            response_livingspaces = Amity().print_file(
+                filename, 'RnO-Livin', allocated_livingSpaces)
 
-        if type(allo_office) is dict and type(allo_livin) is dict:
-            allo_office.update(allo_livin)
-        return [allo_office, resp1, resp2]
+        if type(allocated_offices) and type(allocated_livingSpaces) is dict:
+            allocated_offices.update(allocated_livingSpaces)
+        return [allocated_offices, response_offices, response_livingspaces]
 
     def get_unallocated(self, filename=None):
         '''Display unallocated rooms and print to a file
           if filename is provided'''
-        allo_offices = self.compute(Office.office_n_occupants, 'unallocated')
-        allo_livins = self.compute(LivingSpace.room_n_occupants, 'unallocated')
+        allocated_offices = self.compute_rooms(
+            Office.office_n_occupants, 'unallocated')
+        allocated_livingSpaces = self.compute_rooms(
+            LivingSpace.room_n_occupants, 'unallocated')
 
-        response1 = 'No File Saved'
-        response2 = 'No File Saved'
+        response_office = 'No File Saved'
+        response_livingspaces = 'No File Saved'
         if filename is not None:
-            response1 = Amity().print_file(
-                filename, 'Empty-Office', allo_offices)
-            response2 = Amity().print_file(
-                filename, 'Empty-Livin', allo_livins)
+            response_office = Amity().print_file(
+                filename, 'Empty-Office', allocated_offices)
+            response_livingspaces = Amity().print_file(
+                filename, 'Empty-Livin', allocated_livingSpaces)
 
-        if type(allo_offices) is list and type(allo_livins) is list:
-            allo_offices.extend(allo_livins)
-        return [allo_offices, response1, response2]
+        if type(allocated_offices) and type(allocated_livingSpaces) is list:
+            allocated_offices.extend(allocated_livingSpaces)
+        return [allocated_offices, response_office, response_livingspaces]
 
-    def compute(self, data, return_type):
+    def compute_rooms(self, rooms, return_type):
         '''Compute allocated rooms and unallocated rooms'''
-        allocated = {}
-        unallocated = []
-        for key, value in data.items():
-            if len(value) > 0:
-                allocated[key] = value
-            else:
-                unallocated.append(key)
+        allocated = {key: value for key,
+                     value in rooms.items() if len(value) > 0}
+        unallocated = [key for key, value in rooms.items() if len(value) < 1]
+
         if return_type == 'allocated':
             return allocated
         return unallocated
@@ -309,16 +312,19 @@ class Amity(object):
             occupants.extend(value)
 
         set_occupants = set(occupants)
-        fell = set(fellows) - set_occupants
-        sta = set(staff) - set_occupants
+        fellow_occupants = set(fellows) - set_occupants
+        staff_occupants = set(staff) - set_occupants
 
-        resp1 = 'No File Saved'
-        resp2 = 'No File Saved'
+        response_fellows = 'No File Saved'
+        response_staff = 'No File Saved'
         if filename is not None:
-            resp1 = Amity().print_file(filename, 'unallo_fellows', fell)
-            resp2 = Amity().print_file(filename, 'unallo_staff', sta)
+            response_fellows = Amity().print_file(
+                filename, 'unallo_fellows', fellow_occupants)
+            response_staff = Amity().print_file(
+                filename, 'unallo_staff', staff_occupants)
 
-        return [fell, resp1, sta, resp2]
+        return [fellow_occupants, response_fellows,
+                staff_occupants, response_staff]
 
     def print_file(self, filename, type, data):
         '''Assign .txt extension'''

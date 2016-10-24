@@ -197,44 +197,44 @@ class TestAmity(unittest.TestCase):
         printed = sys.stdout.getvalue()
         self.assertIn('Successful', printed)
 
-    @patch('amity.Amity.compute')
+    @patch('amity.Amity.compute_rooms')
     @patch('amity.Amity.print_file')
-    def test_get_allocations(self, mock_print_file, mock_compute):
-        mock_compute.return_value = {'Amity': ['Eston Mwaura']}
+    def test_get_allocations(self, mock_print_file, mock_compute_rooms):
+        mock_compute_rooms.return_value = {'Amity': ['Eston Mwaura']}
         mock_print_file.return_value = 'Successful'
         room_details = self.amity.get_allocations('test.txt')
 
-        details1 = {'Amity': ['Eston Mwaura']}
-        details2 = 'Successful'
+        office_details = {'Amity': ['Eston Mwaura']}
+        livingspace_details = 'Successful'
 
-        self.assertIn(details1, room_details)
-        self.assertIn(details2, room_details)
+        self.assertIn(office_details, room_details)
+        self.assertIn(livingspace_details, room_details)
 
-    @patch('amity.Amity.compute')
+    @patch('amity.Amity.compute_rooms')
     @patch('amity.Amity.print_file')
-    def test_get_unallocated(self, mock_print_file, mock_compute):
-        mock_compute.return_value = ['Amity']
+    def test_get_unallocated(self, mock_print_file, mock_compute_rooms):
+        mock_compute_rooms.return_value = ['Amity']
         mock_print_file.return_value = 'Successful'
 
-        rum = self.amity.get_unallocated('sample.txt')
+        room_details = self.amity.get_unallocated('sample.txt')
 
-        response1 = ['Amity', 'Amity']
-        response2 = 'Successful'
+        response_office = ['Amity', 'Amity']
+        response_livingspace = 'Successful'
 
-        self.assertIn(response1, rum)
-        self.assertIn(response2, rum)
+        self.assertIn(response_office, room_details)
+        self.assertIn(response_livingspace, room_details)
 
     def test_compute(self):
-        data = {'m55': ['Aubrey, Chiemeka', 'Mayowa'],
-                'Amity': [],
-                'Dojo': ['Migwi', 'Elsis']}
-        computed = self.amity.compute(data, 'allocated')
+        rooms = {'m55': ['Aubrey, Chiemeka', 'Mayowa'],
+                 'Amity': [],
+                 'Dojo': ['Migwi', 'Elsis']}
+        computed = self.amity.compute_rooms(rooms, 'allocated')
 
-        tesd = {'m55': ['Aubrey, Chiemeka', 'Mayowa'],
-                'Dojo': ['Migwi', 'Elsis']}
-        self.assertEqual(computed, tesd)
+        rooms_1 = {'m55': ['Aubrey, Chiemeka', 'Mayowa'],
+                   'Dojo': ['Migwi', 'Elsis']}
+        self.assertEqual(computed, rooms_1)
 
-        computed = self.amity.compute(data, 'unallocated')
+        computed = self.amity.compute_rooms(rooms, 'unallocated')
         self.assertEqual(computed, ['Amity'])
 
     @patch.dict('app.office.Office.office_n_occupants',
